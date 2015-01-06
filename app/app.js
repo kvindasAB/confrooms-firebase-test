@@ -12,7 +12,9 @@ angular.module('myApp', [
 
   .constant("AppConfig",
   {
-    firebaseurl: "https://scorching-fire-2836.firebaseio.com"
+    fire_baseurl: "https://scheduleappab.firebaseio.com",
+    fire_roomsurl: "https://scheduleappab.firebaseio.com/rooms",
+    fire_reservesurl: "https://scheduleappab.firebaseio.com/reserves"
   })
 
   .config(['$routeProvider', function($routeProvider) {

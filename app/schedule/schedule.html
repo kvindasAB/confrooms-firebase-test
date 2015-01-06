@@ -35,36 +35,42 @@
                         <div class="form-group">
                             <label for="itparty">Party</label>
                             <input type="text" class="form-control" id="party" name="party" placeholder="Party"
-                                   ng-model="scheduleform.party" required="" ng-minlength="3">
+                                   ng-model="scheduleform.party" ng-required="true" ng-minlength="3">
+                            <div ng-show="myform.party.$error.required">Specify the party name</div>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="itroom">Room</label>
-                            <select class="form-control"
-                                    ng-options="item as item for item in rooms" ng-model="scheduleform.room"></select>
+                            <select class="form-control" name="room" ng-required="true"
+                                    ng-change="onRoomChanged()"
+                                    ng-options="item.$value as item.$value for item in rooms" ng-model="scheduleform.room"></select>
+                            <div ng-show="myform.room.$error.required">Select the room</div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="itdate">Date</label>
                             <p class="input-group">
-                                <input type="text" class="form-control" datepicker-popup="{{dateFormat}}" ng-model="scheduleform.date"
-                                       is-open="opened"
-                                       datepicker-options="dateOptions"
-                                       date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <input type="text" class="form-control" name="date"
+                                       datepicker-popup="{{dateFormat}}" ng-model="scheduleform.date"
+                                       is-open="opened" datepicker-options="dateOptions"
+                                       show-button-bar="false" ng-change="onDateChanged($event)"
+                                       date-disabled="disabled(date, mode)"
+                                       ng-required="true" close-text="Close" />
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="open($event)">
                                         <i class="glyphicon glyphicon-calendar"></i>
                                     </button>
                                 </span>
+                                <div ng-show="myform.date.$error.required">Select the date</div>
                             </p>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="itstart">Start Time</label>
-                            <timepicker ng-model="scheduleform.startTime" ng-change="changed()"
+                            <timepicker ng-model="scheduleform.startTime" ng-change="onTimeChanged()"
                                         hour-step="timeOptions.hourStep" minute-step="timeOptions.minStep"
                                         show-meridian="timeOptions.showMeridian"></timepicker>
                         </div>
@@ -72,7 +78,7 @@
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="itend">End Time</label>
-                            <timepicker ng-model="scheduleform.endTime" ng-change="changed()"
+                            <timepicker ng-model="scheduleform.endTime" ng-change="onTimeChanged()"
                                         hour-step="timeOptions.hourStep" minute-step="timeOptions.minStep"
                                         show-meridian="timeOptions.showMeridian"></timepicker>
                         </div>
@@ -80,8 +86,7 @@
             </div>
 
             <div class="action-wrapper col-md-12">
-                <tt>{{myform.$valid}}</tt><br>
-                <button type="submit" ng-disabled="!myform.$valid" class="btn btn-primary pull-right" >Submit</button>
+                <button type="submit" ng-disabled="!myform.$valid || !isTimeSelectionValid" class="btn btn-primary pull-right" >Submit</button>
             </div>
 
 

@@ -10,8 +10,25 @@ angular.module('myApp.schedule', ['ngRoute'])
 }])
 
 
-.controller('ScheduleCtrl', ['$scope', function($scope) {
+.factory('ScheduleService', ['$firebase' , 'AppConfig', function($firebase, AppConfig) {
+  var service = {};
 
+  // Rooms Firebase
+  service.roomsRef = new Firebase(AppConfig.fire_roomsurl);
+  service.roomsSync = $firebase(service.roomsRef);
+  service.rooms = service.roomsSync.$asArray();
+
+  // Reserves Firebase
+  service.reservesRef = new Firebase(AppConfig.fire_reservesurl);
+  service.reservesSync = $firebase(service.reservesRef);
+  service.reserves = service.reservesSync.$asArray();
+
+  return service;
+}])
+
+.controller('ScheduleCtrl', ['$scope', 'ScheduleService', function($scope, ScheduleService) {
+
+  $scope.isTimeSelectionValid = false;
   $scope.dateFormat = 'yyyy/MM/dd';
   $scope.timeFormat = 'HH:mm';
   $scope.timeOptions = {
@@ -23,7 +40,7 @@ angular.module('myApp.schedule', ['ngRoute'])
     startingDay: 1
   };
 
-  $scope.rooms = ["fishbowl", "fishtank", "conf3"];
+  $scope.rooms = ScheduleService.rooms;
 
   function initScheduleData (){
     var record =  {
@@ -35,31 +52,33 @@ angular.module('myApp.schedule', ['ngRoute'])
     }
     record.startTime.setMinutes(0);
     record.endTime.setMinutes(0);
+    record.serializeFire = function() {
+      var serialized = {
+        party: record.party,
+        room: record.room,
+        date: record.date.getTime(),
+        startTime: record.startTime.getTime(),
+        endTime: record.endTime.getTime()
+      }
+      return serialized;
+    }
+
     return record;
   }
 
   $scope.scheduleform = initScheduleData();
 
-  $scope.schedules = [
-    {party: "Test Party", room:"room1", date: new Date(), startTime:new Date(), endTime: new Date()},
-    {party: "Test Party", room:"room1", date: new Date(), startTime:new Date(), endTime: new Date()},
-  ];
+  $scope.schedules = ScheduleService.reserves;
 
   function resetForm(){
     $scope.scheduleform = initScheduleData();
   };
 
-  function validateSchedule(data){
-
-  };
-
   function saveSchedule(data){
-    console.log(data);
-    $scope.schedules.push(data);
+    $scope.schedules.$add(data.serializeFire());
   };
 
   $scope.onScheduleSubmit = function($event){
-    validateSchedule($scope.scheduleform)
     saveSchedule($scope.scheduleform);
     resetForm();
   }
@@ -72,8 +91,63 @@ angular.module('myApp.schedule', ['ngRoute'])
 
   // Disables previous dates
   $scope.disabled = function(date, mode) {
-    return date < new Date();
+    var ref = new Date();
+    ref.setHours(0);
+    ref.setMinutes(0);
+    ref.setSeconds(0)
+    return date < date;
   };
 
+  function deserializeSchedule(data){
+    data.dateObj = data.dateObj ? data.dateObj : new Date(data.date);
+    data.startTimeObj = data.startTimeObj ? data.startTimeObj : new Date(data.startTime);
+    data.endTimeObj = data.endTimeObj ? data.endTimeObj : new Date(data.endTime);
+  }
+
+  function isDateEqual(date1, date2){
+    return date1.getDate() === date2.getDate()
+      && date1.getMonth() === date2.getMonth()
+      && date1.getFullYear() === date2.getFullYear();
+  }
+
+  function validateReserve(newReserve, existingReserves){
+    if(!newReserve.date || !newReserve.startTime || !newReserve.endTime){
+      return false;
+    }
+    if(newReserve.endTime <= newReserve.startTime){
+      return false;
+    }
+    for(var i = 0; i < existingReserves.length; i++){
+      var reserve = existingReserves[i];
+      deserializeSchedule(reserve);
+      if(newReserve.room !== reserve.room){
+        continue;
+      }
+      if(!isDateEqual(reserve.dateObj, newReserve.date)){
+        continue;
+      }
+      if(newReserve.startTime <= reserve.endTimeObj && reserve.startTimeObj <=  newReserve.endTime){
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  $scope.validateScheduleForm = function() {
+    $scope.isTimeSelectionValid = validateReserve($scope.scheduleform, $scope.schedules);
+  }
+
+  $scope.onRoomChanged = function(){
+    $scope.validateScheduleForm();
+  };
+
+  $scope.onDateChanged = function(){
+    $scope.validateScheduleForm();
+  };
+
+  $scope.onTimeChanged = function(){
+    $scope.validateScheduleForm();
+  };
 
 }]);
