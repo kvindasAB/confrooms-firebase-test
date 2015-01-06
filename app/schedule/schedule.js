@@ -12,6 +12,8 @@ angular.module('myApp.schedule', ['ngRoute'])
 
 .controller('ScheduleCtrl', ['$scope', function($scope) {
 
+  $scope.dateFormat = 'yyyy/MM/dd';
+  $scope.timeFormat = 'HH:mm';
   $scope.timeOptions = {
     hourStep: 1,
     minStep: 0,
@@ -21,14 +23,13 @@ angular.module('myApp.schedule', ['ngRoute'])
     startingDay: 1
   };
 
-  $scope.dateFormat = 'yyyy/MM/dd';
-  $scope.timeFormat = 'HH:mm';
+  $scope.rooms = ["fishbowl", "fishtank", "conf3"];
 
   function initScheduleData (){
     var record =  {
       party: null,
       room: null,
-      date: new Date(),
+      date: null,
       startTime: new Date(),
       endTime: new Date()
     }
@@ -40,8 +41,8 @@ angular.module('myApp.schedule', ['ngRoute'])
   $scope.scheduleform = initScheduleData();
 
   $scope.schedules = [
-    {party: "Test Party", room:{name:"room1"}, date: new Date(), startTime:new Date(), endTime: new Date()},
-    {party: "Test Party", room:{name:"room1"}, date: new Date(), startTime:new Date(), endTime: new Date()},
+    {party: "Test Party", room:"room1", date: new Date(), startTime:new Date(), endTime: new Date()},
+    {party: "Test Party", room:"room1", date: new Date(), startTime:new Date(), endTime: new Date()},
   ];
 
   function resetForm(){
@@ -53,6 +54,7 @@ angular.module('myApp.schedule', ['ngRoute'])
   };
 
   function saveSchedule(data){
+    console.log(data);
     $scope.schedules.push(data);
   };
 
@@ -63,7 +65,6 @@ angular.module('myApp.schedule', ['ngRoute'])
   }
 
   $scope.open = function($event) {
-    console.log("")
     $event.preventDefault();
     $event.stopPropagation();
     $scope.opened = true;

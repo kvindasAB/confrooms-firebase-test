@@ -21,26 +21,28 @@
                         <td>{{item.date | date:dateFormat}}</td>
                         <td>{{item.startTime | date:timeFormat}}</td>
                         <td>{{item.endTime | date:timeFormat}}</td>
-                        <td>{{item.room.name}}</td>
+                        <td>{{item.room}}</td>
                         <td>{{item.party}}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <form ng-submit="onScheduleSubmit()">
+        <form name="myform" ng-submit="onScheduleSubmit()">
             <div class="form-wrapper">
 
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="itparty">Party</label>
-                            <input type="text" class="form-control" id="party" placeholder="Party" ng-required>
+                            <input type="text" class="form-control" id="party" name="party" placeholder="Party"
+                                   ng-model="scheduleform.party" required="" ng-minlength="3">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="itroom">Room</label>
-                            <input type="text" class="form-control" id="itroom" placeholder="Room" ng-required>
+                            <select class="form-control"
+                                    ng-options="item as item for item in rooms" ng-model="scheduleform.room"></select>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -78,11 +80,13 @@
             </div>
 
             <div class="action-wrapper col-md-12">
-                <button type="submit" class="btn btn-primary pull-right" >Submit</button>
+                <tt>{{myform.$valid}}</tt><br>
+                <button type="submit" ng-disabled="!myform.$valid" class="btn btn-primary pull-right" >Submit</button>
             </div>
 
 
         </form>
 
     </div>
+
 </div>
