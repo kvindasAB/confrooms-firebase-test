@@ -9,7 +9,7 @@ angular.module('myApp.auth')
   $scope.registerform = {
     username: "",
     password: ""
-  }
+  };
 
   function register(username, password) {
     AuthService.auth.$createUser(username, password)
@@ -27,13 +27,11 @@ angular.module('myApp.auth')
   }
 
   $scope.onSaveClicked = function(){
-    console.log("onSaveClicked");
     register($scope.registerform.username, $scope.registerform.password);
-  }
+  };
 
   $scope.onCancelClicked = function(){
-    console.log("onCancelClicked");
     resetForm();
-  }
+  };
 
 }]);

@@ -7,7 +7,7 @@ angular.module('myApp.auth')
     $scope.loginform = {
       username: "",
       password: ""
-    }
+    };
 
     function login(username, password) {
       AuthService.auth.$authWithPassword({
@@ -27,14 +27,12 @@ angular.module('myApp.auth')
     }
 
     $scope.onSaveClicked = function(){
-      console.log("onSaveClicked");
       login($scope.loginform.username, $scope.loginform.password);
-    }
+    };
 
     $scope.onCancelClicked = function(){
-      console.log("onCancelClicked");
       resetForm();
-    }
+    };
 
 }]);
 

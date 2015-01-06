@@ -11,7 +11,7 @@ angular.module('myApp.schedule')
     hourStep: 1,
     minStep: 0,
     showMeridian: false
-  }
+  };
   $scope.dateOptions = {
     startingDay: 1
   };
@@ -25,7 +25,7 @@ angular.module('myApp.schedule')
       date: null,
       startTime: new Date(),
       endTime: new Date()
-    }
+    };
     record.startTime.setMinutes(0);
     record.endTime.setMinutes(0);
     record.serializeFire = function() {
@@ -35,9 +35,9 @@ angular.module('myApp.schedule')
         date: record.date.getTime(),
         startTime: record.startTime.getTime(),
         endTime: record.endTime.getTime()
-      }
+      };
       return serialized;
-    }
+    };
 
     return record;
   }
@@ -48,16 +48,16 @@ angular.module('myApp.schedule')
 
   function resetForm(){
     $scope.scheduleform = initScheduleData();
-  };
+  }
 
   function saveSchedule(data){
     $scope.schedules.$add(data.serializeFire());
-  };
+  }
 
   $scope.onScheduleSubmit = function($event){
     saveSchedule($scope.scheduleform);
     resetForm();
-  }
+  };
 
   $scope.open = function($event) {
     $event.preventDefault();
@@ -70,7 +70,7 @@ angular.module('myApp.schedule')
     var ref = new Date();
     ref.setHours(0);
     ref.setMinutes(0);
-    ref.setSeconds(0)
+    ref.setSeconds(0);
     return date < date;
   };
 
@@ -81,9 +81,9 @@ angular.module('myApp.schedule')
   }
 
   function isDateEqual(date1, date2){
-    return date1.getDate() === date2.getDate()
-      && date1.getMonth() === date2.getMonth()
-      && date1.getFullYear() === date2.getFullYear();
+    return date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear();
   }
 
   function validateReserve(newReserve, existingReserves){
@@ -112,7 +112,7 @@ angular.module('myApp.schedule')
 
   $scope.validateScheduleForm = function() {
     $scope.isTimeSelectionValid = validateReserve($scope.scheduleform, $scope.schedules);
-  }
+  };
 
   $scope.onRoomChanged = function(){
     $scope.validateScheduleForm();
