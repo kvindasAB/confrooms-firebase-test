@@ -5,7 +5,13 @@ angular.module('myApp.schedule', ['ngRoute'])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/schedule', {
     templateUrl: 'schedule/schedule.html',
-    controller: 'ScheduleCtrl'
+    controller: 'ScheduleCtrl',
+    resolve: {
+      "currentAuth": ["AuthService", function(AuthService) {
+        console.log(AuthService.auth);
+        return AuthService.auth.$requireAuth();
+      }]
+    }
   });
 }])
 
@@ -26,7 +32,7 @@ angular.module('myApp.schedule', ['ngRoute'])
   return service;
 }])
 
-.controller('ScheduleCtrl', ['$scope', 'ScheduleService', function($scope, ScheduleService) {
+.controller('ScheduleCtrl', ['currentAuth', '$scope', 'ScheduleService', function(currentAuth, $scope, ScheduleService) {
 
   $scope.isTimeSelectionValid = false;
   $scope.dateFormat = 'yyyy/MM/dd';

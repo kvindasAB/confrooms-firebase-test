@@ -20,12 +20,14 @@ angular.module('myApp.auth', ['ngRoute', 'firebase'])
     service.ref = new Firebase(AppConfig.fire_baseurl);
     service.auth = $firebaseAuth(service.ref);
 
+    service.isUserAuthenticated = function(){
+
+    };
+
     return service;
 }])
 
 .controller('LoginCtrl', ['$scope', 'AuthService', '$location', function($scope, AuthService, $location) {
-
-    console.log($scope);
 
     $scope.loginform = {
       username: "",
