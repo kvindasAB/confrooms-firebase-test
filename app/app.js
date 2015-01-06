@@ -7,7 +7,13 @@ angular.module('myApp', [
   'myApp.auth',
   'myApp.schedule',
   'myApp.version'
-]).
-config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/login'});
-}]);
+])
+
+  .constant("AppConfig",
+  {
+    firebaseurl: "https://scorching-fire-2836.firebaseio.com"
+  })
+
+  .config(['$routeProvider', function($routeProvider) {
+    $routeProvider.otherwise({redirectTo: '/login'});
+  }]);
