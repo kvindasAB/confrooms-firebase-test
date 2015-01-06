@@ -8,7 +8,6 @@ angular.module('myApp.schedule', ['ngRoute'])
     controller: 'ScheduleCtrl',
     resolve: {
       "currentAuth": ["AuthService", function(AuthService) {
-        console.log(AuthService.auth);
         return AuthService.auth.$requireAuth();
       }]
     }
