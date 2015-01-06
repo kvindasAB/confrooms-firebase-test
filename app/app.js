@@ -4,6 +4,7 @@
 angular.module('myApp', [
   'ngRoute',
   'firebase',
+  'ui.bootstrap',
   'myApp.auth',
   'myApp.schedule',
   'myApp.version'

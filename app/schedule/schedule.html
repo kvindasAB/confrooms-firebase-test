@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-offset-2 col-md-8">
+    <div class="col-md-offset-1 col-md-10">
 
         <div class="info-wrapper col-md-12">
             <h1>Scheduling App</h1>
@@ -17,56 +17,72 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>01/01/2014</td>
-                        <td>10:00</td>
-                        <td>16:00</td>
-                        <td>Room1</td>
-                        <td>TestParty</td>
-                    </tr>
-                    <tr>
-                        <td>01/01/2014</td>
-                        <td>10:00</td>
-                        <td>16:00</td>
-                        <td>Room1</td>
-                        <td>TestParty</td>
+                    <tr ng-repeat="item in schedules">
+                        <td>{{item.date | date:dateFormat}}</td>
+                        <td>{{item.startTime | date:timeFormat}}</td>
+                        <td>{{item.endTime | date:timeFormat}}</td>
+                        <td>{{item.room.name}}</td>
+                        <td>{{item.party}}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="form-wrapper">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="itparty">Party</label>
-                    <input type="text" class="form-control" id="party" placeholder="Party">
-                </div>
+        <form ng-submit="onScheduleSubmit()">
+            <div class="form-wrapper">
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="itparty">Party</label>
+                            <input type="text" class="form-control" id="party" placeholder="Party" ng-required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="itroom">Room</label>
+                            <input type="text" class="form-control" id="itroom" placeholder="Room" ng-required>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="itdate">Date</label>
+                            <p class="input-group">
+                                <input type="text" class="form-control" datepicker-popup="{{dateFormat}}" ng-model="scheduleform.date"
+                                       is-open="opened"
+                                       datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="open($event)">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </button>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="itstart">Start Time</label>
+                            <timepicker ng-model="scheduleform.startTime" ng-change="changed()"
+                                        hour-step="timeOptions.hourStep" minute-step="timeOptions.minStep"
+                                        show-meridian="timeOptions.showMeridian"></timepicker>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="itend">End Time</label>
+                            <timepicker ng-model="scheduleform.endTime" ng-change="changed()"
+                                        hour-step="timeOptions.hourStep" minute-step="timeOptions.minStep"
+                                        show-meridian="timeOptions.showMeridian"></timepicker>
+                        </div>
+                    </div>
             </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="itroom">Room</label>
-                    <input type="text" class="form-control" id="itroom" placeholder="Room">
-                </div>
+
+            <div class="action-wrapper col-md-12">
+                <button type="submit" class="btn btn-primary pull-right" >Submit</button>
             </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="itdate">Date</label>
-                    <input type="text" class="form-control" id="itdate" placeholder="Date">
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="itstart">Start Time</label>
-                    <input type="text" class="form-control" id="itstart" placeholder="Start Time">
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label for="itend">End Time</label>
-                    <input type="text" class="form-control" id="itend" placeholder="End Time">
-                </div>
-            </div>
-        </div>
+
+
+        </form>
 
     </div>
 </div>
