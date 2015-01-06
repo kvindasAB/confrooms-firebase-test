@@ -9,6 +9,8 @@ angular.module('myApp.schedule', ['ngRoute'])
   });
 }])
 
+
+
 .controller('ScheduleCtrl', [function() {
 
 }]);
