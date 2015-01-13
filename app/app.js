@@ -12,9 +12,9 @@ angular.module('myApp', [
 
   .constant("AppConfig",
   {
-    fire_baseurl: "https://scheduleappab.firebaseio.com",
-    fire_roomsurl: "https://scheduleappab.firebaseio.com/rooms",
-    fire_reservesurl: "https://scheduleappab.firebaseio.com/reserves"
+    fire_baseurl: "https://schedulerappabtest.firebaseio.com",
+    fire_roomsurl: "https://schedulerappabtest.firebaseio.com/rooms",
+    fire_reservesurl: "https://schedulerappabtest.firebaseio.com/reserves"
   })
 
   .config(['$routeProvider', function($routeProvider) {
